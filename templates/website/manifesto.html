@@ -1,30 +1,303 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}My Manifesto - {{ site_config.site_name }}{% endblock %}
+{% block title %}NRM Manifesto 2026-2031 | Hon. Enid Origumisiriza Atuheire{% endblock %}
+
+{% block extra_css %}
+<style>
+    .manifesto-hero {
+        background: linear-gradient(135deg, #111827 0%, #1e3a1e 50%, #b45309 100%);
+        color: #fff;
+        padding: 140px 0 60px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .manifesto-hero::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, #FFD700 0%, #008751 50%, #000 100%);
+    }
+    .nrm-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 215, 0, 0.18);
+        border: 1px solid #FFD700;
+        color: #FFD700;
+        font-weight: 700;
+        padding: 8px 18px;
+        border-radius: 50px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+    .manifesto-hero h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+        color: #fff;
+    }
+    .manifesto-hero p.tagline {
+        font-size: 1.25rem;
+        color: #fef08a;
+        max-width: 820px;
+        margin: 0 auto 25px;
+        line-height: 1.6;
+    }
+    .manifesto-hero-cta {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 25px;
+    }
+    .btn-nrm {
+        background: #FFD700;
+        color: #111;
+        font-weight: 700;
+        padding: 12px 28px;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.35);
+    }
+    .btn-nrm:hover {
+        background: #f59e0b;
+        color: #000;
+        transform: translateY(-2px);
+    }
+    .btn-outline-gold {
+        border: 2px solid #FFD700;
+        color: #FFD700;
+        font-weight: 600;
+        padding: 12px 28px;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s;
+    }
+    .btn-outline-gold:hover {
+        background: #FFD700;
+        color: #111;
+    }
+
+    .manifesto-section {
+        padding: 70px 0;
+        background: #f8fafc;
+    }
+    .nrm-theme-banner {
+        background: #fff;
+        border-radius: 16px;
+        padding: 30px;
+        margin-bottom: 50px;
+        border-left: 6px solid #FFD700;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .nrm-theme-banner h3 {
+        color: #15803d;
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+    .nrm-theme-banner p {
+        color: #374151;
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+
+    .manifesto-grid-custom {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 28px;
+    }
+    .manifesto-card-nrm {
+        background: #fff;
+        border-radius: 16px;
+        padding: 32px 28px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .manifesto-card-nrm:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.09);
+        border-color: #FFD700;
+    }
+    .manifesto-card-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+        color: #854d0e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    .manifesto-card-nrm h3 {
+        font-size: 1.35rem;
+        color: #111827;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+    .manifesto-card-nrm p.desc {
+        color: #4b5563;
+        font-size: 0.98rem;
+        line-height: 1.6;
+        margin-bottom: 18px;
+    }
+    .manifesto-points {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 20px 0;
+        flex-grow: 1;
+    }
+    .manifesto-points li {
+        position: relative;
+        padding-left: 26px;
+        margin-bottom: 10px;
+        color: #374151;
+        font-size: 0.94rem;
+        line-height: 1.5;
+    }
+    .manifesto-points li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #15803d;
+        font-weight: 800;
+    }
+
+    .nrm-cta-box {
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        color: #fff;
+        border-radius: 20px;
+        padding: 50px 40px;
+        margin-top: 60px;
+        text-align: center;
+        border: 2px solid #FFD700;
+    }
+    .nrm-cta-box h2 {
+        font-size: 2.2rem;
+        color: #FFD700;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+    .nrm-cta-box p {
+        font-size: 1.15rem;
+        color: #d1d5db;
+        max-width: 750px;
+        margin: 0 auto 30px;
+        line-height: 1.7;
+    }
+    .nrm-links-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+        .manifesto-hero h1 { font-size: 2rem; }
+        .manifesto-grid-custom { grid-template-columns: 1fr; }
+        .nrm-cta-box { padding: 30px 20px; }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<!-- Manifesto Section -->
-<section class="manifesto" style="padding-top: 120px;">
+<!-- Hero Header -->
+<header class="manifesto-hero">
     <div class="container">
-        <div class="section-header">
-            <h2>My Manifesto</h2>
-            <p>Building a stronger, more prosperous Kabale District together</p>
+        <div class="nrm-badge">
+            <i class="fas fa-flag"></i> National Resistance Movement (NRM)
         </div>
-        <div class="manifesto-grid">
+        <h1>Our Manifesto &amp; Legislative Agenda (2026–2031)</h1>
+        <p class="tagline">
+            Aligned with the NRM National Strategic Vision: <strong>“Protecting the Gains and Securing a Qualitative Leap into High Middle-Income Status.”</strong>
+        </p>
+        <p style="color: #e5e7eb; max-width: 700px; margin: 0 auto 20px;">
+            Hon. Enid Origumisiriza Atuheire brings dedicated servant leadership to Kabale District, championing inclusive community growth, women empowerment, quality healthcare, and modern infrastructure.
+        </p>
+        <div class="manifesto-hero-cta">
+            <a href="#pillars" class="btn-nrm">
+                <i class="fas fa-list-check"></i> Explore Priority Pillars
+            </a>
+            <a href="https://nrm.ug" target="_blank" rel="noopener noreferrer" class="btn-outline-gold">
+                <i class="fas fa-external-link-alt"></i> NRM Official Website
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Main Manifesto Content -->
+<section id="pillars" class="manifesto-section">
+    <div class="container">
+        <!-- NRM Policy Framework Banner -->
+        <div class="nrm-theme-banner">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-certificate" style="color: #FFD700; font-size: 1.8rem;"></i>
+                <h3 style="margin: 0;">Anchored on National Transformation &amp; PDM</h3>
+            </div>
+            <p>
+                Our Kabale District legislative and development program is fully integrated with President Yoweri Kaguta Museveni’s NRM 2026–2031 Manifesto, the Fourth National Development Plan (NDP IV), and the Parish Development Model (PDM). We focus on lifting every household in Kabale from subsistence to the money economy, prioritizing mothers, youths, farmers, and elders.
+            </p>
+        </div>
+
+        <!-- Dynamic Pillars Grid from Database -->
+        <div class="manifesto-grid-custom">
             {% for item in manifesto_items %}
-            <div class="manifesto-item">
-                <div class="manifesto-icon">
+            <article class="manifesto-card-nrm">
+                <div class="manifesto-card-icon">
                     <i class="fas fa-{{ item.icon }}"></i>
                 </div>
                 <h3>{{ item.title }}</h3>
-                <ul>
+                <p class="desc">{{ item.description }}</p>
+                {% if item.points %}
+                <ul class="manifesto-points">
                     {% for point in item.points %}
                     <li>{{ point }}</li>
                     {% endfor %}
                 </ul>
-            </div>
+                {% endif %}
+            </article>
+            {% empty %}
+            <p style="text-align: center; grid-column: 1 / -1; color: #6b7280;">Manifesto items are being updated in the campaign administration system.</p>
             {% endfor %}
+        </div>
+
+        <!-- Continuing to NRM Official Website Box -->
+        <div class="nrm-cta-box">
+            <h2>Deepen Your Understanding of the NRM Agenda</h2>
+            <p>
+                Hon. Enid Origumisiriza Atuheire stands firmly with the party's principles of Patriotism, Pan-Africanism, Socio-economic Transformation, and Democracy. Read the full National Resistance Movement policy manifesto, presidential achievements, and institutional reports on the official party website.
+            </p>
+            <div class="nrm-links-group">
+                <a href="https://nrm.ug" target="_blank" rel="noopener noreferrer" class="btn-nrm" style="font-size: 1.05rem; padding: 14px 34px;">
+                    <i class="fas fa-globe"></i> Continue to NRM Official Website (nrm.ug)
+                </a>
+                <a href="{% url 'website:contact' %}" class="btn-outline-gold" style="font-size: 1.05rem; padding: 14px 34px;">
+                    <i class="fas fa-envelope"></i> Share Your Ideas with Aunt Enid
+                </a>
+            </div>
         </div>
     </div>
 </section>

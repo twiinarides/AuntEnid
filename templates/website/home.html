@@ -3,26 +3,280 @@
 
 {% block title %}{{ site_config.site_name }} - {{ site_config.tagline }}{% endblock %}
 
+{% block extra_css %}
+<style>
+    .home-news-section {
+        padding: 80px 0;
+        background: #f8fafc;
+    }
+    .home-section-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    .home-section-header h2 {
+        font-size: 2.4rem;
+        font-weight: 800;
+        color: #111827;
+        margin-bottom: 12px;
+    }
+    .home-section-header p {
+        font-size: 1.15rem;
+        color: #6b7280;
+        max-width: 650px;
+        margin: 0 auto;
+    }
+    .home-news-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+        margin-bottom: 45px;
+    }
+    .home-news-card {
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+    .home-news-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        border-color: #FFD700;
+    }
+    .home-news-img-box {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+        background: #111827;
+    }
+    .home-news-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+    .home-news-card:hover .home-news-img {
+        transform: scale(1.05);
+    }
+    .home-news-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #FFD700;
+        color: #111;
+        font-size: 0.75rem;
+        font-weight: 800;
+        padding: 5px 12px;
+        border-radius: 50px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .home-news-date {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        background: rgba(17, 24, 39, 0.85);
+        color: #FFD700;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 6px;
+        backdrop-filter: blur(4px);
+    }
+    .home-news-body {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    .home-news-body h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 12px;
+        line-height: 1.4;
+    }
+    .home-news-body p {
+        color: #4b5563;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        flex-grow: 1;
+    }
+    .home-news-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 15px;
+        border-top: 1px solid #f3f4f6;
+    }
+    .btn-read-story {
+        color: #15803d;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.92rem;
+        transition: gap 0.2s;
+    }
+    .btn-read-story:hover {
+        color: #047857;
+        gap: 10px;
+    }
+    .home-location-tag {
+        color: #9ca3af;
+        font-size: 0.82rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    /* Manifesto preview section on home */
+    .home-manifesto-preview {
+        padding: 80px 0;
+        background: #fff;
+    }
+    .home-manifesto-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-top: 40px;
+    }
+    .home-manifesto-pill {
+        background: #f9fafb;
+        border-radius: 14px;
+        padding: 25px;
+        border-left: 4px solid #FFD700;
+        transition: all 0.3s;
+    }
+    .home-manifesto-pill:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .home-manifesto-pill i {
+        font-size: 2rem;
+        color: #15803d;
+        margin-bottom: 12px;
+    }
+    .home-manifesto-pill h4 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 8px;
+    }
+    .home-manifesto-pill p {
+        color: #6b7280;
+        font-size: 0.92rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
 <section id="home" class="hero">
     <div class="hero-content">
         <div class="hero-text">
-            <h1>Enid Origumisiriza Atuheire</h1>
+            <h1>{{ site_config.about_title }}</h1>
             <h2>{{ site_config.tagline }}</h2>
             <h3>{{ site_config.subtitle }}</h3>
             <p class="hero-subtitle">{{ site_config.hero_description }}</p>
             <div class="hero-buttons">
-                <a href="{% url 'website:manifesto' %}" class="btn btn-primary">Read My Manifesto</a>
-                <a href="{% url 'website:about' %}" class="btn btn-secondary">Learn More</a>
+                <a href="{% url 'website:manifesto' %}" class="btn btn-primary">
+                    <i class="fas fa-file-contract"></i> Read My Manifesto
+                </a>
+                <a href="{% url 'website:about' %}" class="btn btn-secondary">
+                    <i class="fas fa-user"></i> About Hon. Enid
+                </a>
             </div>
         </div>
         <div class="hero-image">
-            <img src="{% static 'images/enid1.jpg' %}" alt="Aunt Enid" class="hero-photo">
+            {% if site_config.profile_image %}
+            <img src="{{ site_config.profile_image.url }}" alt="{{ site_config.about_title }}" class="hero-photo">
+            {% else %}
+            <img src="{% static 'images/enid1.jpg' %}" alt="Hon. Enid Origumisiriza" class="hero-photo">
+            {% endif %}
         </div>
     </div>
     <div class="scroll-indicator">
         <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+<!-- Latest News & Live Activities Section -->
+<section class="home-news-section">
+    <div class="container">
+        <div class="home-section-header">
+            <h2>Latest Activities &amp; Updates</h2>
+            <p>Real-time campaign updates, community meetings, and legislative initiatives across Kabale District</p>
+        </div>
+
+        <div class="home-news-grid">
+            {% for article in all_articles %}
+            <article class="home-news-card">
+                <div class="home-news-img-box">
+                    {% if article.featured_image %}
+                    <img src="{{ article.featured_image.url }}" alt="{{ article.image_alt_text|default:article.title }}" class="home-news-img" loading="lazy">
+                    {% else %}
+                    <img src="{% static 'images/enid3.jpg' %}" alt="{{ article.title }}" class="home-news-img" loading="lazy">
+                    {% endif %}
+                    <span class="home-news-badge">{{ article.get_category_display }}</span>
+                    <span class="home-news-date"><i class="far fa-calendar-alt"></i> {{ article.published_date|date:"d M Y" }}</span>
+                </div>
+                <div class="home-news-body">
+                    <h3>{{ article.title }}</h3>
+                    <p>{{ article.excerpt|truncatewords:24 }}</p>
+                    <div class="home-news-footer">
+                        <span class="home-location-tag"><i class="fas fa-map-marker-alt"></i> {{ article.location }}</span>
+                        <a href="{{ article.get_absolute_url }}" class="btn-read-story">
+                            Read Full Story <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #6b7280;">
+                <p>New updates and activities are being published shortly.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="text-align: center;">
+            <a href="{% url 'website:news_list' %}" class="btn btn-primary" style="padding: 12px 32px; font-weight: 700;">
+                <i class="fas fa-newspaper"></i> View All {{ news_count }} Stories &amp; Updates
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Manifesto Pillars Overview -->
+<section class="home-manifesto-preview">
+    <div class="container">
+        <div class="home-section-header">
+            <h2>Our Core Priorities (2026–2031)</h2>
+            <p>Committed to uplifting the people of Kabale District through dedicated parliamentary representation</p>
+        </div>
+
+        <div class="home-manifesto-grid">
+            {% for item in manifesto_items %}
+            <div class="home-manifesto-pill">
+                <i class="fas fa-{{ item.icon }}"></i>
+                <h4>{{ item.title }}</h4>
+                <p>{{ item.description|truncatewords:18 }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="{% url 'website:manifesto' %}" class="btn btn-secondary" style="background: #15803d; border-color: #15803d; color: #fff; padding: 12px 30px;">
+                <i class="fas fa-book-reader"></i> Read Full Manifesto &amp; NRM Agenda
+            </a>
+        </div>
     </div>
 </section>
 {% endblock %}

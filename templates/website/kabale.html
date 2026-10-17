@@ -1,33 +1,514 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}Kabale District - {{ site_config.site_name }}{% endblock %}
+{% block title %}Kabale District Profile &amp; Official UBOS Statistics | Hon. Enid Origumisiriza Atuheire{% endblock %}
+
+{% block extra_css %}
+<style>
+    .kabale-hero {
+        background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #111827 100%);
+        color: #fff;
+        padding: 140px 0 60px;
+        position: relative;
+    }
+    .kabale-hero::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, #FFD700 0%, #059669 50%, #000 100%);
+    }
+    .kabale-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 215, 0, 0.2);
+        border: 1px solid #FFD700;
+        color: #FFD700;
+        font-weight: 700;
+        padding: 6px 16px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        margin-bottom: 18px;
+        letter-spacing: 0.5px;
+    }
+    .kabale-hero h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+    .kabale-hero p.subtitle {
+        font-size: 1.25rem;
+        color: #a7f3d0;
+        max-width: 800px;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+    .hero-btn-row {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    .btn-kabale-primary {
+        background: #FFD700;
+        color: #111;
+        font-weight: 700;
+        padding: 12px 28px;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s;
+    }
+    .btn-kabale-primary:hover {
+        background: #f59e0b;
+        transform: translateY(-2px);
+    }
+    .btn-kabale-outline {
+        border: 2px solid #FFD700;
+        color: #FFD700;
+        font-weight: 600;
+        padding: 12px 28px;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s;
+    }
+    .btn-kabale-outline:hover {
+        background: #FFD700;
+        color: #111;
+    }
+
+    .kabale-body {
+        padding: 70px 0;
+        background: #f8fafc;
+    }
+
+    /* UBOS Stats Dashboard */
+    .ubos-banner {
+        background: #fff;
+        border-radius: 18px;
+        padding: 30px;
+        margin-bottom: 40px;
+        border-left: 6px solid #059669;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .ubos-banner-text h3 {
+        color: #065f46;
+        font-size: 1.4rem;
+        font-weight: 800;
+        margin-bottom: 6px;
+    }
+    .ubos-banner-text p {
+        color: #4b5563;
+        font-size: 0.95rem;
+        margin: 0;
+    }
+    .ubos-tag {
+        background: #d1fae5;
+        color: #065f46;
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.85rem;
+    }
+
+    .stats-dashboard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        margin-bottom: 50px;
+    }
+    .stat-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+        border: 1px solid #e5e7eb;
+        transition: transform 0.3s;
+        position: relative;
+    }
+    .stat-card:hover {
+        transform: translateY(-4px);
+        border-color: #059669;
+    }
+    .stat-card-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        background: #ecfdf5;
+        color: #059669;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        margin-bottom: 14px;
+    }
+    .stat-card-val {
+        font-size: 1.9rem;
+        font-weight: 800;
+        color: #111827;
+        margin-bottom: 4px;
+        display: block;
+    }
+    .stat-card-lbl {
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+    .stat-card-sub {
+        font-size: 0.78rem;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Section Cards */
+    .sector-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 35px;
+        margin-bottom: 35px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+    .sector-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f3f4f6;
+    }
+    .sector-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        background: #fef3c7;
+        color: #b45309;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+    .sector-header h2 {
+        font-size: 1.6rem;
+        color: #111827;
+        font-weight: 700;
+        margin: 0;
+    }
+    .sector-card p {
+        color: #374151;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+
+    .facilities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .fac-item {
+        background: #f9fafb;
+        border-radius: 12px;
+        padding: 20px;
+        border-left: 4px solid #059669;
+    }
+    .fac-item h4 {
+        font-size: 1.1rem;
+        color: #111827;
+        margin-bottom: 6px;
+        font-weight: 700;
+    }
+    .fac-item p {
+        font-size: 0.92rem;
+        color: #6b7280;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* District link footer box */
+    .district-official-box {
+        background: linear-gradient(135deg, #111827 0%, #1e293b 100%);
+        color: #fff;
+        border-radius: 18px;
+        padding: 45px 35px;
+        margin-top: 50px;
+        border: 2px solid #FFD700;
+        text-align: center;
+    }
+    .district-official-box h3 {
+        font-size: 2rem;
+        color: #FFD700;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+    .district-official-box p {
+        font-size: 1.1rem;
+        color: #cbd5e1;
+        max-width: 720px;
+        margin: 0 auto 28px;
+        line-height: 1.7;
+    }
+    .btn-district-web {
+        background: #FFD700;
+        color: #111;
+        font-weight: 800;
+        padding: 14px 34px;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.05rem;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+    .btn-district-web:hover {
+        background: #f59e0b;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+        .kabale-hero h1 { font-size: 2rem; }
+        .stats-dashboard { grid-template-columns: 1fr 1fr; }
+        .facilities-grid { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<!-- Kabale District Section -->
-<section class="kabale" style="padding-top: 120px;">
+<!-- Kabale Hero -->
+<header class="kabale-hero">
     <div class="container">
-        <div class="section-header">
-            <h2>{{ site_config.kabale_title }}</h2>
-            <p>{{ site_config.kabale_subtitle }}</p>
+        <div class="kabale-badge">
+            <i class="fas fa-mountain"></i> The Switzerland of Africa | Kigezi Sub-Region
         </div>
-        <div class="kabale-content">
-            <div class="kabale-text">
-                <h3>Why Kabale Matters</h3>
-                <p>{{ site_config.kabale_description }}</p>
-                
-                <div class="kabale-features">
-                    {% for feature in kabale_features %}
-                    <div class="feature">
-                        <i class="fas fa-{{ feature.icon }}"></i>
-                        <div>
-                            <h4>{{ feature.title }}</h4>
-                            <p>{{ feature.description }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
+        <h1>{{ site_config.kabale_title }}</h1>
+        <p class="subtitle">{{ site_config.kabale_subtitle }}</p>
+        <div class="hero-btn-row">
+            <a href="#stats" class="btn-kabale-primary">
+                <i class="fas fa-chart-pie"></i> UBOS 2024 Census Data
+            </a>
+            <a href="https://kabale.go.ug" target="_blank" rel="noopener noreferrer" class="btn-kabale-outline">
+                <i class="fas fa-external-link-alt"></i> Kabale District Local Government Portal
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Main District Section -->
+<section class="kabale-body" id="stats">
+    <div class="container">
+        <!-- UBOS Official Census Banner -->
+        <div class="ubos-banner">
+            <div class="ubos-banner-text">
+                <h3><i class="fas fa-database"></i> Uganda Bureau of Statistics (UBOS) 2024 Records</h3>
+                <p>Official figures from the National Population and Housing Census (NPHC 2024) and District Local Government Records</p>
+            </div>
+            <span class="ubos-tag"><i class="fas fa-shield-alt"></i> Official UBOS Grounded</span>
+        </div>
+
+        <!-- Key Stats Dashboard -->
+        <div class="stats-dashboard">
+            <div class="stat-card">
+                <div class="stat-card-icon"><i class="fas fa-users"></i></div>
+                <span class="stat-card-val">285,588</span>
+                <div class="stat-card-lbl">Total Population</div>
+                <div class="stat-card-sub">UBOS NPHC 2024</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-icon"><i class="fas fa-female"></i></div>
+                <span class="stat-card-val">164,365</span>
+                <div class="stat-card-lbl">Female Population (57.6%)</div>
+                <div class="stat-card-sub">121,223 Males</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-icon"><i class="fas fa-home"></i></div>
+                <span class="stat-card-val">66,752</span>
+                <div class="stat-card-lbl">Total Households</div>
+                <div class="stat-card-sub">4.2 Persons / Household</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+                <span class="stat-card-val">509.1</span>
+                <div class="stat-card-lbl">Density (per km²)</div>
+                <div class="stat-card-sub">Land Area: ~561 km²</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-icon"><i class="fas fa-hospital-alt"></i></div>
+                <span class="stat-card-val">280+ Beds</span>
+                <div class="stat-card-lbl">Kabale Regional Referral</div>
+                <div class="stat-card-sub">Serves Kigezi &amp; Cross-border</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-icon"><i class="fas fa-sitemap"></i></div>
+                <span class="stat-card-val">15 / 79</span>
+                <div class="stat-card-lbl">Sub-Counties &amp; Parishes</div>
+                <div class="stat-card-sub">2 Counties (Ndorwa &amp; Municipality)</div>
+            </div>
+        </div>
+
+        <!-- Overview & Geographic Identity -->
+        <div class="sector-card">
+            <div class="sector-header">
+                <div class="sector-icon"><i class="fas fa-globe-africa"></i></div>
+                <h2>Geographic Profile &amp; Strategic Gateway</h2>
+            </div>
+            <p>{{ site_config.kabale_description|linebreaks }}</p>
+        </div>
+
+        <!-- 1. Health Sector -->
+        <div class="sector-card" id="health">
+            <div class="sector-header">
+                <div class="sector-icon" style="background: #fee2e2; color: #dc2626;"><i class="fas fa-heartbeat"></i></div>
+                <h2>Health Infrastructure &amp; Medical Network</h2>
+            </div>
+            <p>
+                Healthcare delivery in Kabale District is organized hierarchically through government facilities, private-not-for-profit (PNFP) church hospitals, and community health centers. Hon. Enid Origumisiriza Atuheire actively champions maternal-child health, reducing infant stunting, and stocking rural health centers.
+            </p>
+            <div class="facilities-grid">
+                <div class="fac-item">
+                    <h4>Kabale Regional Referral Hospital</h4>
+                    <p>The apex medical teaching hospital in the region (280+ beds) with an active emergency wing, serving the greater Kigezi sub-region, Rwanda, and DRC cross-border patients.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Our Lady of Good Health Rushoroza Hospital</h4>
+                    <p>Prominent church-founded PNFP hospital under the Catholic Diocese of Kabale providing major surgery, maternity, and specialized pediatric care.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Rugarama Hospital</h4>
+                    <p>Church of Uganda PNFP community hospital with 24/7 emergency services, maternity wing, ultrasound, and public health community outposts.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Kamukira Health Centre IV</h4>
+                    <p>Government Health Sub-District (HSD) headquarters in Kabale Municipality providing emergency obstetric surgery (C-sections) and primary healthcare.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Sub-County Health Centre IIIs</h4>
+                    <p>Network including Buhara HC III, Maziba HC III, Buramba HC III, offering immunization, antenatal care, and outpatient services across sub-counties.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Parish Health Units (HC IIs)</h4>
+                    <p>Units including Rwanyena, Bugongi, and Kinyamari delivering frontline primary health outreach and health surveillance.</p>
                 </div>
             </div>
+        </div>
+
+        <!-- 2. Roads & Transport Infrastructure -->
+        <div class="sector-card" id="roads">
+            <div class="sector-header">
+                <div class="sector-icon" style="background: #e0e7ff; color: #4338ca;"><i class="fas fa-road"></i></div>
+                <h2>Roads &amp; Transport Connectivity</h2>
+            </div>
+            <p>
+                Due to Kabale's hilly "Switzerland of Africa" topography, roads are vital lifelines for commerce, moving agricultural goods, and connecting remote mountain villages to market centres. Key transport corridors include:
+            </p>
+            <div class="facilities-grid">
+                <div class="fac-item">
+                    <h4>Kampala–Mbarara–Kabale Highway</h4>
+                    <p>410 km primary asphalt trunk route connecting southwestern Uganda to Kampala and the Northern Corridor international transit route.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Kabale–Katuna (Rwanda Border) Road</h4>
+                    <p>25 km asphalt international transit highway facilitating major EAC trade between Uganda, Rwanda, Burundi, and eastern DR Congo.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Kabale–Lake Bunyonyi Tourism Circuit</h4>
+                    <p>Targeted AfDB-supported regional road paving projects to boost tourism access, eco-resort connectivity, and local passenger mobility.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Feeder &amp; Community Access Roads</h4>
+                    <p>Over 800 km of district, urban, and community access roads requiring continuous maintenance, drainage, and culvert reinforcement to resist soil erosion and mudslides.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Education & Human Capital -->
+        <div class="sector-card" id="education">
+            <div class="sector-header">
+                <div class="sector-icon" style="background: #fef3c7; color: #b45309;"><i class="fas fa-graduation-cap"></i></div>
+                <h2>Education &amp; Knowledge Centers</h2>
+            </div>
+            <p>
+                Kabale District is historically revered as an educational capital in southwestern Uganda. It is home to renowned historic high schools and higher institutions:
+            </p>
+            <div class="facilities-grid">
+                <div class="fac-item">
+                    <h4>Kabale University</h4>
+                    <p>Chartered Public University providing degree programs in Medicine, Engineering, Education, Sciences, and Agriculture, drawing students from across East Africa.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Kigezi High School</h4>
+                    <p>Historic academic powerhouse that has shaped prime ministers, judges, educators, and national leaders across generations.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Kigezi College Butobere &amp; Bishop Kivigyere</h4>
+                    <p>Prestige institutions promoting STEM, humanities, and girl-child secondary training.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>National Teachers' College (NTC) &amp; Technical Institutes</h4>
+                    <p>Vocational and tertiary centers equipping youths with practical pedagogical and craft skills.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Economy, Agriculture & Tourism -->
+        <div class="sector-card" id="economy">
+            <div class="sector-header">
+                <div class="sector-icon" style="background: #ecfdf5; color: #047857;"><i class="fas fa-seedling"></i></div>
+                <h2>Economy: Uganda's Potato Basket &amp; Tourism Anchor</h2>
+            </div>
+            <p>
+                Highland agriculture and eco-tourism constitute the lifeblood of Kabale's economy:
+            </p>
+            <div class="facilities-grid">
+                <div class="fac-item">
+                    <h4>Highland Terraced Agriculture</h4>
+                    <p>Uganda's primary producer of Irish potatoes, sorghum, cabbage, beans, and zero-grazing dairy livestock, supplying Kampala and regional urban markets.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Lake Bunyonyi Tourism</h4>
+                    <p>One of Africa's deepest and most picturesque crater lakes, dotted with 29 islands (including Punishment Island), driving bird-watching, boat tours, and eco-resort hospitality.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Kabale Central Market &amp; Cross-Border Commerce</h4>
+                    <p>Modernized multi-story commercial market accommodating thousands of small-scale vendors, traders, and international produce brokers.</p>
+                </div>
+                <div class="fac-item">
+                    <h4>Parish Development Model (PDM) &amp; Emyooga</h4>
+                    <p>Active rollout across 79 parishes to fund agricultural value addition, seed multiplication, and women/youth micro-enterprises.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Official District Link Box -->
+        <div class="district-official-box">
+            <h3>Explore the Official District Portal</h3>
+            <p>
+                For official circulars, council minutes, district tender opportunities, public service notices, and administrative announcements, visit the official Kabale District Local Government website.
+            </p>
+            <a href="https://kabale.go.ug" target="_blank" rel="noopener noreferrer" class="btn-district-web">
+                <i class="fas fa-external-link-alt"></i> Visit Official Kabale District Website (kabale.go.ug)
+            </a>
         </div>
     </div>
 </section>

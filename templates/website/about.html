@@ -1,36 +1,377 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}About Aunt Enid - {{ site_config.site_name }}{% endblock %}
+{% block title %}About Hon. Enid Origumisiriza Atuheire | Kabale District Woman MP{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-hero {
+        background: linear-gradient(135deg, #111827 0%, #1e3a1e 60%, #15803d 100%);
+        color: #fff;
+        padding: 130px 0 60px;
+        position: relative;
+    }
+    .about-hero::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, #FFD700 0%, #008751 50%, #000 100%);
+    }
+    .about-hero-grid {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        gap: 40px;
+        align-items: center;
+    }
+    .about-hero-portrait {
+        position: relative;
+        text-align: center;
+    }
+    .about-portrait-img {
+        width: 300px;
+        height: 360px;
+        border-radius: 20px;
+        object-fit: cover;
+        border: 4px solid #FFD700;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+        background: #f3f4f6;
+    }
+    .about-hero-badge {
+        position: absolute;
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #FFD700;
+        color: #111;
+        font-weight: 800;
+        padding: 6px 16px;
+        border-radius: 30px;
+        font-size: 0.85rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        white-space: nowrap;
+    }
+    .about-hero-text h1 {
+        font-size: 2.6rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 8px;
+    }
+    .about-hero-text h2 {
+        font-size: 1.3rem;
+        color: #FFD700;
+        font-weight: 600;
+        margin-bottom: 18px;
+    }
+    .about-key-stats {
+        display: flex;
+        gap: 20px;
+        margin-top: 25px;
+        flex-wrap: wrap;
+    }
+    .stat-pill {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 215, 0, 0.4);
+        border-radius: 12px;
+        padding: 12px 18px;
+        backdrop-filter: blur(8px);
+    }
+    .stat-pill .num {
+        display: block;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #FFD700;
+    }
+    .stat-pill .lbl {
+        font-size: 0.82rem;
+        color: #e5e7eb;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .about-main-section {
+        padding: 70px 0;
+        background: #f9fafb;
+    }
+    .about-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 35px;
+        margin-bottom: 35px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+    .about-card h3 {
+        font-size: 1.5rem;
+        color: #111827;
+        font-weight: 700;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .about-card h3 i {
+        color: #15803d;
+    }
+    .about-card p {
+        color: #374151;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 16px;
+    }
+
+    .bio-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+    .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .info-list li {
+        padding: 12px 0;
+        border-bottom: 1px solid #f3f4f6;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        color: #374151;
+        font-size: 0.98rem;
+    }
+    .info-list li i {
+        color: #FFD700;
+        margin-top: 4px;
+        font-size: 1.1rem;
+    }
+
+    /* Core values styling */
+    .values-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-top: 25px;
+    }
+    .val-box {
+        background: #fff;
+        border-radius: 14px;
+        padding: 24px;
+        text-align: center;
+        border-top: 4px solid #FFD700;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        transition: transform 0.3s;
+    }
+    .val-box:hover {
+        transform: translateY(-4px);
+    }
+    .val-box i {
+        font-size: 2.2rem;
+        color: #15803d;
+        margin-bottom: 12px;
+    }
+    .val-box h4 {
+        font-size: 1.18rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 8px;
+    }
+    .val-box p {
+        color: #6b7280;
+        font-size: 0.92rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* Gallery preview on about page */
+    .about-gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin-top: 25px;
+    }
+    .about-gallery-item {
+        border-radius: 12px;
+        overflow: hidden;
+        height: 180px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .about-gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s;
+    }
+    .about-gallery-item img:hover {
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 850px) {
+        .about-hero-grid { grid-template-columns: 1fr; text-align: center; }
+        .about-portrait-img { margin: 0 auto; }
+        .about-key-stats { justify-content: center; }
+        .bio-columns { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<!-- About Section -->
-<section class="about" style="padding-top: 120px;">
+<!-- About Hero -->
+<header class="about-hero">
     <div class="container">
-        <div class="section-header">
-            <h2>{{ site_config.about_title }}</h2>
-            <p>{{ site_config.about_subtitle }}</p>
-        </div>
-        <div class="about-content">
-            <div class="about-text">
-                <h3>Why I'm Running</h3>
-                <p>{{ site_config.why_running }}</p>
-                
-                <h3>My Vision</h3>
-                <p>{{ site_config.vision }}</p>
-                
-                <div class="core-values">
-                    <h3>Core Values</h3>
-                    <div class="values-grid">
-                        {% for value in core_values %}
-                        <div class="value-item">
-                            <i class="fas fa-{{ value.icon }}"></i>
-                            <h4>{{ value.title }}</h4>
-                            <p>{{ value.description }}</p>
-                        </div>
-                        {% endfor %}
+        <div class="about-hero-grid">
+            <div class="about-hero-portrait">
+                {% if site_config.profile_image %}
+                <img src="{{ site_config.profile_image.url }}" alt="Hon. Enid Origumisiriza Atuheire" class="about-portrait-img">
+                {% else %}
+                <img src="{% static 'images/enid1.jpg' %}" alt="Hon. Enid Origumisiriza Atuheire" class="about-portrait-img">
+                {% endif %}
+                <span class="about-hero-badge"><i class="fas fa-check-circle"></i> Woman MP Kabale</span>
+            </div>
+            <div class="about-hero-text">
+                <h1>{{ site_config.about_title }}</h1>
+                <h2>{{ site_config.about_subtitle }}</h2>
+                <p style="font-size: 1.1rem; line-height: 1.7; color: #f3f4f6; max-width: 680px;">
+                    An educator, dedicated mother, and servant leader who has stood with the families of Kabale across villages, churches, and community projects. Fondly known as <strong>"Aunt Enid"</strong>.
+                </p>
+                <div class="about-key-stats">
+                    <div class="stat-pill">
+                        <span class="num">46,797</span>
+                        <span class="lbl">General Election Votes</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="num">12th</span>
+                        <span class="lbl">Parliament of Uganda</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="num">NRM</span>
+                        <span class="lbl">Party Flag Bearer</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main About Content -->
+<section class="about-main-section">
+    <div class="container">
+        <!-- Biography Card -->
+        <div class="about-card">
+            <h3><i class="fas fa-book-open"></i> Full Biography &amp; Early Journey</h3>
+            <p>{{ site_config.about_bio|linebreaks }}</p>
+        </div>
+
+        <!-- Educational & Professional Background -->
+        <div class="bio-columns">
+            <div class="about-card">
+                <h3><i class="fas fa-graduation-cap"></i> Education &amp; Training</h3>
+                <ul class="info-list">
+                    <li>
+                        <i class="fas fa-school"></i>
+                        <div>
+                            <strong>Bishop Kivigyere Girls' School</strong>
+                            <p style="margin: 3px 0 0; color: #6b7280; font-size: 0.9rem;">Primary Education Foundation</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-university"></i>
+                        <div>
+                            <strong>Kigezi High School</strong>
+                            <p style="margin: 3px 0 0; color: #6b7280; font-size: 0.9rem;">Uganda Certificate of Education (O-Level) &amp; UACE (A-Level)</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-certificate"></i>
+                        <div>
+                            <strong>National Teachers’ College (NTC) Kabale</strong>
+                            <p style="margin: 3px 0 0; color: #6b7280; font-size: 0.9rem;">Diploma in Education</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-award"></i>
+                        <div>
+                            <strong>Bishop Barham University College (UCU)</strong>
+                            <p style="margin: 3px 0 0; color: #6b7280; font-size: 0.9rem;">Bachelor of Education (B.Ed)</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="about-card">
+                <h3><i class="fas fa-briefcase"></i> Professional Career &amp; Leadership</h3>
+                <ul class="info-list">
+                    <li>
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <div>
+                            <strong>Senior Woman Teacher — Kigezi High School</strong>
+                            <p style="margin: 3px 0 0; color: #6b7280; font-size: 0.9rem;">Mentored hundreds of young girls, promoted discipline, and built girl-child empowerment programs.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-broadcast-tower"></i>
+                        <div>
+                            <strong>Community Radio Broadcaster &amp; Mentor</strong>
+                            <p style="margin: 3px 0 0; color: #6b7280; font-size: 0.9rem;">Hosted inspirational programs uplifting women, widows, youth talents, and household livelihoods.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-child"></i>
+                        <div>
+                            <strong>Children of the Word Outreach</strong>
+                            <p style="margin: 3px 0 0; color: #6b7280; font-size: 0.9rem;">Founder and patron nurturing young minds, spiritual values, sports, and talent development.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-landmark"></i>
+                        <div>
+                            <strong>Member of Parliament (Kabale District)</strong>
+                            <p style="margin: 3px 0 0; color: #6b7280; font-size: 0.9rem;">NRM Flag Bearer serving in the 12th Parliament of Uganda (2026–2031).</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Why Serving & Vision -->
+        <div class="about-card">
+            <h3><i class="fas fa-compass"></i> Why I Serve Kabale District</h3>
+            <p>{{ site_config.why_running }}</p>
+
+            <h3 style="margin-top: 25px;"><i class="fas fa-eye"></i> My Vision for 2026–2031</h3>
+            <p>{{ site_config.vision }}</p>
+        </div>
+
+        <!-- Core Leadership Values -->
+        <div class="about-card">
+            <h3><i class="fas fa-heart"></i> Core Leadership Pillars</h3>
+            <div class="values-row">
+                {% for value in core_values %}
+                <div class="val-box">
+                    <i class="fas fa-{{ value.icon }}"></i>
+                    <h4>{{ value.title }}</h4>
+                    <p>{{ value.description }}</p>
+                </div>
+                {% empty %}
+                <div class="val-box"><i class="fas fa-heart"></i><h4>Compassion</h4><p>Leading with empathy and practical solutions.</p></div>
+                <div class="val-box"><i class="fas fa-handshake"></i><h4>Integrity</h4><p>Transparent and accountable representation.</p></div>
+                <div class="val-box"><i class="fas fa-users"></i><h4>Inclusivity</h4><p>Empowering every parish without political discrimination.</p></div>
+                <div class="val-box"><i class="fas fa-lightbulb"></i><h4>Innovation</h4><p>Targeted solutions for agriculture, roads, and healthcare.</p></div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Community Photos -->
+        <div class="about-card">
+            <h3><i class="fas fa-camera"></i> Aunt Enid in the Community</h3>
+            <div class="about-gallery-grid">
+                <div class="about-gallery-item"><img src="{% static 'images/enid1.jpg' %}" alt="Hon. Enid Origumisiriza"></div>
+                <div class="about-gallery-item"><img src="{% static 'images/enid3.jpg' %}" alt="Hon. Enid community meeting"></div>
+                <div class="about-gallery-item"><img src="{% static 'images/enid4.jpg' %}" alt="Hon. Enid rally"></div>
+                <div class="about-gallery-item"><img src="{% static 'images/kololo-nomination.jpg' %}" alt="NRM Kololo celebration"></div>
+                <div class="about-gallery-item"><img src="{% static 'images/rally1.jpg' %}" alt="Campaign rally"></div>
+                <div class="about-gallery-item"><img src="{% static 'images/party.jpg' %}" alt="Aunt Enid supporters"></div>
             </div>
         </div>
     </div>

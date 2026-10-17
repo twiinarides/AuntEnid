@@ -28,6 +28,7 @@ ALLOWED_HOSTS = [
     '162.0.224.189',
     'localhost',
     '127.0.0.1',
+    'testserver',
 ]
 
 CSRF_TRUSTED_ORIGINS = [

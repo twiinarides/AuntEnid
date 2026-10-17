@@ -1,0 +1,162 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Photo Gallery | Hon. Enid Origumisiriza Atuheire{% endblock %}
+
+{% block extra_css %}
+<style>
+    .gallery-hero {
+        background: linear-gradient(135deg, #111827 0%, #1e3a1e 100%);
+        color: #fff;
+        padding: 130px 0 50px;
+        text-align: center;
+        border-bottom: 5px solid #FFD700;
+    }
+    .gallery-hero h1 {
+        font-size: 2.6rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+    .gallery-hero p {
+        font-size: 1.15rem;
+        color: #fef08a;
+        max-width: 650px;
+        margin: 0 auto;
+    }
+    .gallery-section {
+        padding: 70px 0;
+        background: #f9fafb;
+    }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+    }
+    .gallery-card {
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        transition: transform 0.3s, box-shadow 0.3s;
+        display: flex;
+        flex-direction: column;
+    }
+    .gallery-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+    }
+    .gallery-img-box {
+        height: 240px;
+        overflow: hidden;
+        background: #111827;
+    }
+    .gallery-img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s;
+    }
+    .gallery-card:hover .gallery-img-box img {
+        transform: scale(1.05);
+    }
+    .gallery-info {
+        padding: 20px;
+    }
+    .gallery-info h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 8px;
+    }
+    .gallery-info p {
+        font-size: 0.9rem;
+        color: #6b7280;
+        margin: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="gallery-hero">
+    <div class="container">
+        <h1>Photo Gallery &amp; Community Moments</h1>
+        <p>Hon. Enid Origumisiriza Atuheire across rallies, consultations, NRM mobilization, and community empowerment in Kabale District</p>
+    </div>
+</header>
+
+<section class="gallery-section">
+    <div class="container">
+        <div class="gallery-grid">
+            {% for photo in gallery_images %}
+            <div class="gallery-card">
+                <div class="gallery-img-box">
+                    <img src="{{ photo.image.url }}" alt="{{ photo.alt_text|default:photo.title }}">
+                </div>
+                <div class="gallery-info">
+                    <h3>{{ photo.title }}</h3>
+                    {% if photo.caption %}
+                    <p>{{ photo.caption }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <!-- Default Local Project Photos -->
+            <div class="gallery-card">
+                <div class="gallery-img-box">
+                    <img src="{% static 'images/enid1.jpg' %}" alt="Hon. Enid Origumisiriza portrait">
+                </div>
+                <div class="gallery-info">
+                    <h3>Official Portrait</h3>
+                    <p>Hon. Enid Origumisiriza Atuheire — Woman Member of Parliament, Kabale District</p>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-img-box">
+                    <img src="{% static 'images/enid3.jpg' %}" alt="Community consultation">
+                </div>
+                <div class="gallery-info">
+                    <h3>Community Engagement</h3>
+                    <p>Consultations with parish leaders and mothers across Kabale</p>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-img-box">
+                    <img src="{% static 'images/enid4.jpg' %}" alt="Campaign rally">
+                </div>
+                <div class="gallery-info">
+                    <h3>Rally in Kabale Municipality</h3>
+                    <p>Addressing youth and women groups on economic transformation</p>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-img-box">
+                    <img src="{% static 'images/kololo-nomination.jpg' %}" alt="Kololo celebration">
+                </div>
+                <div class="gallery-info">
+                    <h3>Kololo Independence Grounds</h3>
+                    <p>Celebrating President Yoweri Museveni's nomination with NRM delegates</p>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-img-box">
+                    <img src="{% static 'images/rally1.jpg' %}" alt="Mobilization rally">
+                </div>
+                <div class="gallery-info">
+                    <h3>Grassroots Mobilization</h3>
+                    <p>Solidarity across Ndorwa County sub-counties</p>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-img-box">
+                    <img src="{% static 'images/party.jpg' %}" alt="Victory celebrations">
+                </div>
+                <div class="gallery-info">
+                    <h3>Victory &amp; Thanksgiving</h3>
+                    <p>Supporters gathering to celebrate the journey to Parliament</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

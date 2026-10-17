@@ -15,6 +15,9 @@ urlpatterns = [
     # Article pages
     path('article/<slug:slug>/', views.article_detail, name='article_detail'),
     
+    # Gallery
+    path('gallery/', views.gallery, name='gallery'),
+
     # AJAX endpoints
     path('contact-ajax/', views.contact_ajax, name='contact_ajax'),
     

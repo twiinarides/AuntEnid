@@ -2,382 +2,326 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from website.models import (
     NewsArticle, ManifestoItem, CoreValue, 
-    KabaleFeature, SiteConfiguration
+    KabaleFeature, SiteConfiguration, GalleryImage, KabaleStatistic
 )
 
 
 class Command(BaseCommand):
-    help = 'Populate the database with initial data from the original website'
+    help = 'Populate the database with up-to-date data for Hon. Enid Origumisiriza Atuheire and Kabale District'
 
     def handle(self, *args, **options):
-        self.stdout.write('Starting data population...')
+        self.stdout.write('Starting comprehensive data update...')
         
-        # Create or update site configuration
-        config, created = SiteConfiguration.objects.get_or_create(
-            defaults={
-                'site_name': 'Aunt Enid',
-                'tagline': 'Aspiring Woman Member of Parliament',
-                'subtitle': 'NRM FLAG BEARER Kabale District 2026-2031',
-                'hero_description': 'A compassionate leader who empowers, connects, and transforms communities',
-                'phone': '+256 705 357 149',
-                'email': 'auntenid@kabale2026.com',
-                'location': 'Kabale District, Uganda',
-                'whatsapp': '256764195740',
-                'tiktok_url': 'https://tiktok.com/@auntenid',
-                'about_title': 'Who is Aunt Enid?',
-                'about_subtitle': 'A dedicated community leader with a heart for service and transformation',
-                'why_running': 'As a woman leader deeply rooted in Kabale District, I believe in the power of inclusive governance that uplifts every voice, especially those often unheard. Our community deserves leadership that understands the unique challenges we face and has the compassion to address them with wisdom and determination.',
-                'vision': 'I envision a Kabale District where every family thrives, where women and youth are empowered, where education is accessible to all, and where our natural resources benefit our entire community. This vision drives my commitment to serve as your representative in Parliament.',
-                'kabale_title': 'Kabale District',
-                'kabale_subtitle': 'Our beautiful home with unlimited potential',
-                'kabale_description': 'Kabale, often called the "Switzerland of Africa" because of its cool climate and rolling green hills, is a district that shows how resilience and determination can shape destiny. From the hills of Kabale comes a message: No matter how tough the environment, with resilience, unity, and vision, one can turn challenges into stepping stones toward greatness.',
-                'footer_description': 'Empowering Kabale District through compassionate leadership and inclusive development.',
-                'copyright_text': '2025 Aunt Enid Campaign. All rights reserved.',
-            }
+        # 1. Update or create site configuration
+        config, created = SiteConfiguration.objects.get_or_create(id=1)
+        config.site_name = "Hon. Enid Origumisiriza Atuheire"
+        config.tagline = "Woman Member of Parliament — Kabale District"
+        config.subtitle = "NRM FLAG BEARER | 12th Parliament of Uganda (2026–2031)"
+        config.hero_description = (
+            "A compassionate leader who empowers, connects, and transforms communities. "
+            "Dedicated to servant leadership, quality healthcare, youth empowerment, and rural development in Kabale District."
         )
-        
-        if created:
-            self.stdout.write('✓ Site configuration created')
-        else:
-            self.stdout.write('✓ Site configuration already exists')
+        config.phone = "0764195740"
+        config.email = "auntenidoa@gmail.com"
+        config.location = "Kabale District, Uganda"
+        config.whatsapp = "+256 705 357149"
+        config.twitter_url = "https://x.com/auntenid"
+        config.facebook_url = "https://facebook.com/auntenid"
+        config.tiktok_url = "https://tiktok.com/@auntenid"
+        config.about_title = "Hon. Enid Origumisiriza Atuheire"
+        config.about_subtitle = "Woman Member of Parliament, Kabale District | 12th Parliament of Uganda"
+        config.about_bio = (
+            "Hon. Enid Origumisiriza Atuheire was born in Kashumurizi village, Kabale District. "
+            "She attended Bishop Kivigyere Girls' School for primary education, then proceeded to "
+            "the historic Kigezi High School for both O-Level and A-Level studies. She completed her professional teacher "
+            "training at National Teachers' College (NTC) Kabale before obtaining her Bachelor of Education (B.Ed) degree from "
+            "Bishop Barham University College.\n\n"
+            "Prior to entering competitive politics, she served with distinction as a teacher and rose to become the "
+            "Senior Woman Teacher at Kigezi High School — an experience that cemented her dedication to girl-child protection, "
+            "youth mentorship, and household education.\n\n"
+            "In 2021, she contested for the Kabale District Woman Member of Parliament seat as an independent candidate. "
+            "In 2025, she won the hotly contested National Resistance Movement (NRM) primary elections, defeating the incumbent. "
+            "In the February 2026 General Elections, she clinched a resounding victory with 46,797 votes, winning the confidence "
+            "and mandate of the people of Kabale. She was officially sworn into the 12th Parliament of Uganda in May 2026."
+        )
+        config.education_background = (
+            "Bishop Kivigyere Girls' School (Primary) | "
+            "Kigezi High School (UCE & UACE) | "
+            "National Teachers' College, Kabale (Diploma in Education) | "
+            "Bishop Barham University College (Bachelor of Education)"
+        )
+        config.professional_background = (
+            "Educator | Senior Woman Teacher (Kigezi High School) | "
+            "Community Broadcaster | Patron, Children of the Word | Member of Parliament"
+        )
+        config.why_running = (
+            "As a woman leader deeply rooted in Kabale District, I believe in the power of inclusive governance "
+            "that uplifts every voice, especially those often unheard. Our community deserves leadership that understands "
+            "our rugged terrain, our economic potential, and has the compassion to address household poverty with wisdom and persistence."
+        )
+        config.vision = (
+            "I envision a Kabale District where every mother delivers safely in a well-equipped health center, "
+            "every youth possesses practical marketable skills, farmers receive premium prices for their produce through cooperatives, "
+            "and government initiatives like the Parish Development Model (PDM) genuinely transform families at the grassroots."
+        )
+        config.kabale_title = "Kabale District"
+        config.kabale_subtitle = "The Switzerland of Africa — Gateway to Tourism, Agriculture & Regional Trade"
+        config.kabale_description = (
+            "Kabale District, situated in the Kigezi Sub-Region of South-Western Uganda, is widely celebrated as the "
+            "'Switzerland of Africa' owing to its cool temperate climate and scenic terraced green highlands. "
+            "According to official Uganda Bureau of Statistics (UBOS) 2024 Census figures, Kabale is home to 285,588 residents "
+            "(164,365 females and 121,223 males) with an average household size of 4.2 persons and a high population density of ~509 people/km².\n\n"
+            "Known as Uganda's potato basket, Kabale farmers have tamed the steep mountainous hills into productive terraced steps. "
+            "Bordered by Rwanda at the Katuna border crossing (just 25 km from Kabale Town), the district serves as an indispensable trade artery "
+            "and the tourism gateway to Lake Bunyonyi and the mountain gorillas of the Kigezi landscape."
+        )
+        config.kabale_website_url = "https://kabale.go.ug"
+        config.footer_description = "Serving Kabale District with transparent leadership, compassion, and inclusive community empowerment."
+        config.copyright_text = "2026 Hon. Enid Origumisiriza Atuheire. All rights reserved."
+        config.save()
+        self.stdout.write(self.style.SUCCESS("[OK] Site Configuration updated successfully!"))
 
-        # Create core values
-        core_values_data = [
-            {
-                'title': 'Compassion',
-                'icon': 'heart',
-                'description': 'Leading with empathy and understanding',
-                'order': 1
-            },
-            {
-                'title': 'Integrity',
-                'icon': 'handshake',
-                'description': 'Transparent and accountable leadership',
-                'order': 2
-            },
-            {
-                'title': 'Inclusivity',
-                'icon': 'users',
-                'description': 'Representing all voices in our community',
-                'order': 3
-            },
-            {
-                'title': 'Innovation',
-                'icon': 'lightbulb',
-                'description': 'Creative solutions for our challenges',
-                'order': 4
-            }
+        # 2. Populate / Update UBOS Kabale Statistics
+        stats_data = [
+            # Population
+            {'label': 'Total Population', 'value': '285,588', 'unit': 'people', 'category': 'population', 'icon': 'users', 'source': 'UBOS NPHC 2024', 'order': 1},
+            {'label': 'Female Population', 'value': '164,365', 'unit': 'women (57.6%)', 'category': 'population', 'icon': 'female', 'source': 'UBOS NPHC 2024', 'order': 2},
+            {'label': 'Male Population', 'value': '121,223', 'unit': 'men (42.4%)', 'category': 'population', 'icon': 'male', 'source': 'UBOS NPHC 2024', 'order': 3},
+            {'label': 'Total Households', 'value': '66,752', 'unit': 'households', 'category': 'population', 'icon': 'home', 'source': 'UBOS NPHC 2024', 'order': 4},
+            {'label': 'Average Household Size', 'value': '4.2', 'unit': 'persons/household', 'category': 'population', 'icon': 'user-friends', 'source': 'UBOS NPHC 2024', 'order': 5},
+            {'label': 'Population Density', 'value': '509.1', 'unit': 'persons/km²', 'category': 'population', 'icon': 'expand-arrows-alt', 'source': 'UBOS NPHC 2024', 'order': 6},
+            {'label': 'Land Area', 'value': '561.4', 'unit': 'square kilometers', 'category': 'population', 'icon': 'map', 'source': 'UBOS Statistical Abstract', 'order': 7},
+            # Health
+            {'label': 'Kabale Regional Referral', 'value': '280+', 'unit': 'inpatient beds', 'category': 'health', 'icon': 'hospital', 'source': 'Ministry of Health 2024', 'order': 1},
+            {'label': 'Major Referral Hospitals', 'value': '3', 'unit': 'facilities', 'category': 'health', 'icon': 'hospital-alt', 'source': 'Kabale RRH, Rushoroza, Rugarama', 'order': 2},
+            {'label': 'Sub-County Health Centres', 'value': '15+', 'unit': 'HC III & IV units', 'category': 'health', 'icon': 'clinic-medical', 'source': 'District Health Office', 'order': 3},
+            # Infrastructure & Roads
+            {'label': 'Kampala-Kabale Highway', 'value': '410', 'unit': 'kilometers (Tarmac)', 'category': 'infrastructure', 'icon': 'road', 'source': 'UNRA Transport Network', 'order': 1},
+            {'label': 'Katuna Border Distance', 'value': '25', 'unit': 'kilometers', 'category': 'infrastructure', 'icon': 'exchange-alt', 'source': 'Uganda-Rwanda Border Highway', 'order': 2},
+            {'label': 'Sub-counties & Divisions', 'value': '15', 'unit': 'local councils', 'category': 'governance', 'icon': 'landmark', 'source': 'Kabale Local Government', 'order': 1},
+            {'label': 'Parishes & Wards', 'value': '79', 'unit': 'PDM beneficiary parishes', 'category': 'governance', 'icon': 'sitemap', 'source': 'Parish Development Model Register', 'order': 2},
+            # Education
+            {'label': 'Kabale University', 'value': 'Public', 'unit': 'Chartered University', 'category': 'education', 'icon': 'university', 'source': 'Ministry of Education', 'order': 1},
+            {'label': 'Govt Aided Secondary Schools', 'value': '15+', 'unit': 'secondary institutions', 'category': 'education', 'icon': 'school', 'source': 'District Education Department', 'order': 2},
         ]
         
-        for value_data in core_values_data:
-            value, created = CoreValue.objects.get_or_create(
-                title=value_data['title'],
-                defaults=value_data
-            )
-            if created:
-                self.stdout.write(f'✓ Core value "{value.title}" created')
+        KabaleStatistic.objects.all().delete()
+        for stat in stats_data:
+            KabaleStatistic.objects.create(**stat)
+        self.stdout.write(self.style.SUCCESS(f"[OK] Populated {len(stats_data)} UBOS Kabale District statistics!"))
 
-        # Create manifesto items
+        # 3. Create or Update Core Values
+        core_values_data = [
+            {'title': 'Compassion', 'icon': 'heart', 'description': 'Listening to vulnerable households, widows, and youth with empathy and practical relief.', 'order': 1},
+            {'title': 'Integrity', 'icon': 'handshake', 'description': 'Transparent, accountable, and corruption-free advocacy for Kabale resources in Parliament.', 'order': 2},
+            {'title': 'Inclusivity', 'icon': 'users', 'description': 'Uniting all sub-counties, religions, and backgrounds without political bias or favoritism.', 'order': 3},
+            {'title': 'Hard Work & Resilience', 'icon': 'mountain', 'description': 'Drawing inspiration from the Bakiga spirit to conquer steep challenges and deliver real progress.', 'order': 4},
+            {'title': 'Innovation & Skills', 'icon': 'lightbulb', 'description': 'Empowering youth and women with modern agricultural value addition and trade technologies.', 'order': 5},
+        ]
+        CoreValue.objects.all().delete()
+        for cv in core_values_data:
+            CoreValue.objects.create(**cv)
+        self.stdout.write(self.style.SUCCESS(f"[OK] Created {len(core_values_data)} core values!"))
+
+        # 4. Create or Update Manifesto Pillars (NRM 2026-2031 aligned)
         manifesto_data = [
             {
-                'title': 'Education & Youth Empowerment',
-                'icon': 'graduation-cap',
-                'description': 'Empowering the next generation through quality education and opportunities',
+                'title': 'Healthcare & Maternal Survival',
+                'icon': 'heartbeat',
+                'description': 'Upgrading rural health infrastructure and saving mothers and newborns across Kigezi.',
                 'points': [
-                    'Improve access to quality education for all children',
-                    'Support vocational training programs',
-                    'Create youth employment opportunities',
-                    'Establish mentorship programs'
+                    'Ensure all Health Centre IIIs have functioning maternity wards and solar power',
+                    'Advocate for medicine availability and specialized equipment at Kamukira HC IV and Kabale RRH',
+                    'Provide community ambulance facilitation for difficult mountain terrain',
+                    'Aggressive nutrition drives to reduce childhood stunting across all 79 parishes'
                 ],
                 'order': 1
             },
             {
-                'title': 'Women Empowerment',
-                'icon': 'female',
-                'description': 'Advancing women\'s rights and opportunities in Kabale District',
+                'title': 'Education, Youth Skills & Employment',
+                'icon': 'graduation-cap',
+                'description': 'Equipping young people with marketable technical skills and stem school dropouts.',
                 'points': [
-                    'Advocate for women\'s rights and opportunities',
-                    'Support women-led businesses and cooperatives',
-                    'Improve maternal and child healthcare',
-                    'Create platforms for women\'s voices'
+                    'Sponsor vocational training programs (carpentry, tailoring, salon, ICT, driving)',
+                    'Combat boy-child and girl-child school dropout rates in rural sub-counties',
+                    'Support Kabale University student innovations and community research fellowships',
+                    'Establish Aunt Enid talent incubators and sports leagues to inspire young leaders'
                 ],
                 'order': 2
             },
             {
-                'title': 'Agriculture & Food Security',
-                'icon': 'leaf',
-                'description': 'Modernizing agriculture for sustainable food production',
+                'title': 'Women Economic Empowerment',
+                'icon': 'female',
+                'description': 'Elevating women from subsistence farming into business ownership and cooperative wealth.',
                 'points': [
-                    'Modernize farming practices and technology',
-                    'Support agricultural cooperatives',
-                    'Improve market access for farmers',
-                    'Promote sustainable farming methods'
+                    'Link women savings SACCOs directly to low-interest seed capital and Emyooga funds',
+                    'Provide financial literacy and value-addition training for market vendors',
+                    'Defend widow land rights and combat domestic gender-based violence',
+                    'Support women-led craft, pottery, and tourist souvenir micro-enterprises at Lake Bunyonyi'
                 ],
                 'order': 3
             },
             {
-                'title': 'Infrastructure Development',
-                'icon': 'road',
-                'description': 'Building essential infrastructure for development',
+                'title': 'Agriculture, PDM & Food Security',
+                'icon': 'leaf',
+                'description': 'Maximizing returns from terraced farming in Uganda’s premier potato and vegetable basket.',
                 'points': [
-                    'Improve road networks and connectivity',
-                    'Enhance healthcare facilities',
-                    'Develop clean water projects',
-                    'Expand electricity access'
+                    'Ensure 100% transparent disbursement of Parish Development Model (PDM) funds in every parish',
+                    'Supply certified Irish potato seeds, fertilizer subsidies, and modern terrace conservation techniques',
+                    'Establish post-harvest cold storage and packaging facilities in Kabale Municipality',
+                    'Eliminate middlemen exploitation through district agricultural marketing cooperatives'
                 ],
                 'order': 4
             },
             {
-                'title': 'Economic Development',
-                'icon': 'chart-line',
-                'description': 'Creating opportunities for economic growth',
+                'title': 'Roads, Bridges & Tourism Infrastructure',
+                'icon': 'road',
+                'description': 'Unlocking connectivity across steep hills and tapping the Lake Bunyonyi tourism economy.',
                 'points': [
-                    'Attract investment to Kabale District',
-                    'Support small and medium enterprises',
-                    'Develop tourism potential',
-                    'Create job opportunities'
+                    'Lobby central government and UNRA for tarmacking tourism circuits around Lake Bunyonyi',
+                    'Procure heavy district road maintenance equipment for clearing landslides and opening farm access roads',
+                    'Construct durable footbridges over mountain rivers to keep school children safe during rains',
+                    'Expand rural electrification and solar street lighting across commercial trading centers'
                 ],
                 'order': 5
             },
             {
-                'title': 'Community Security',
-                'icon': 'shield-alt',
-                'description': 'Ensuring safety and security for all residents',
+                'title': 'Clean Water & Environmental Protection',
+                'icon': 'tint',
+                'description': 'Safeguarding mountain ecosystems while providing clean gravity water to highland homes.',
                 'points': [
-                    'Strengthen community policing',
-                    'Address domestic violence issues',
-                    'Promote peace and unity',
-                    'Support vulnerable populations'
+                    'Expand Gravity Flow Schemes (GFS) from highland springs to water-scarce hilltops',
+                    'Promote tree planting and bamboo planting on steep slopes to prevent soil erosion and fatal landslides',
+                    'Protect Lake Bunyonyi wetlands from siltation while preserving eco-tourism livelihoods',
+                    'Drill deep-water solar boreholes in hard-to-reach sub-counties'
                 ],
                 'order': 6
             }
         ]
-        
-        for manifesto_data_item in manifesto_data:
-            manifesto, created = ManifestoItem.objects.get_or_create(
-                title=manifesto_data_item['title'],
-                defaults=manifesto_data_item
-            )
-            if created:
-                self.stdout.write(f'✓ Manifesto item "{manifesto.title}" created')
+        ManifestoItem.objects.all().delete()
+        for item in manifesto_data:
+            ManifestoItem.objects.create(**item)
+        self.stdout.write(self.style.SUCCESS(f"[OK] Created {len(manifesto_data)} NRM manifesto pillars!"))
 
-        # Create Kabale features
-        kabale_features_data = [
+        # 5. Populate and Sync Up-to-date Live News Stories
+        articles_data = [
             {
-                'title': 'Natural Beauty & Education',
-                'icon': 'mountain',
-                'description': 'Blessed with stunning landscapes and fertile soils, Beyond farming, Kabale\'s story is one of education and transformation. Despite humble beginnings, the district has produced some of Uganda\'s finest leaders, entrepreneurs, and scholars, proving that greatness can rise from the hills. Institutions like Kigezi College Butobere and Kabale University have become centers of hope, nurturing young minds who dream far beyond their villages.',
-                'order': 1
-            },
-            {
-                'title': 'Strong Community',
-                'icon': 'users',
-                'description': 'Kabale also teaches a lesson in unity and identity. The Bakiga people, known for their hard work and strength, carry a culture of resilience that inspires Uganda and Africa at large. Their dances, energy, and determination are a reminder that no obstacle is too steep to climb.',
-                'order': 2
-            },
-            {
-                'title': 'Strategic Location',
-                'icon': 'map-marker-alt',
-                'description': 'Kabale District sits in a golden spot in southwestern Uganda, right next to Rwanda and close to the DRC. It is a gateway for trade, tourism, and culture. With its rolling green hills, cool climate, and Lake Bunyonyi\'s beauty, Kabale is not just Uganda\'s potato basket but also a door to international markets and world-class tourism. From here, roads lead to Rwanda, Burundi, and beyond—making Kabale a place where nature, culture, and opportunity meet.',
-                'order': 3
-            },
-            {
-                'title': 'Agricultural Potential',
-                'icon': 'seedling',
-                'description': 'Decades ago, Kabale was seen mainly as a remote highland area, difficult to access, with steep hills that made farming hard. But the people of Kabale refused to be limited by the land. Instead, they turned the challenge into strength. They mastered the art of terrace farming, carving steps into the mountainsides and making them bloom with Irish potatoes, sorghum, beans, and vegetables. Today, Kabale is recognized as Uganda\'s potato basket and a leader in sustainable farming.',
-                'order': 4
-            }
-        ]
-        
-        for feature_data in kabale_features_data:
-            feature, created = KabaleFeature.objects.get_or_create(
-                title=feature_data['title'],
-                defaults=feature_data
-            )
-            if created:
-                self.stdout.write(f'✓ Kabale feature "{feature.title}" created')
+                'title': 'Hon. Enid Origumisiriza Takes Oath in the 12th Parliament of Uganda',
+                'slug': 'hon-enid-origumisiriza-takes-oath-12th-parliament',
+                'excerpt': 'Following her decisive victory in the general election, Hon. Enid Origumisiriza Atuheire was sworn in as Kabale District Woman MP, pledging selfless advocacy and grassroots development.',
+                'content': '''Hon. Enid Origumisiriza Atuheire has officially taken her oath of allegiance as the Woman Member of Parliament representing Kabale District in the 12th Parliament of Uganda.
 
-        # Create news articles
-        news_articles_data = [
+Dressed in radiant traditional attire and accompanied by family members, religious leaders, and party mobilizers, Hon. Enid placed her hand on the Holy Bible at the parliamentary grounds in Kampala, swearing to preserve, protect, and defend the Constitution of the Republic of Uganda.
+
+Her swearing-in comes on the back of an overwhelming general election victory in February, where she garnered 46,797 votes on the National Resistance Movement (NRM) ticket.
+
+Speaking to journalists shortly after the ceremony, Hon. Enid outlined her top legislative agenda:
+1. Championing Maternal and Infant Health: Ensuring that health centers like Kamukira HC IV, Buhara HC III, and Maziba HC III receive emergency delivery kits, reliable water, and solar backups.
+2. Overseeing the Parish Development Model (PDM): Safeguarding PDM funding across Kabale's 79 parishes so that funds directly reach vulnerable households without bureaucratic deductions.
+3. Quality Education & Youth Retainment: Addressing the alarming school dropout rates among boys and girls and expanding vocational training.
+4. Infrastructure & Tourism: Lobbying for the completion and upgrading of the Lake Bunyonyi tourism circuit roads and district feeder connections.
+
+"I stand here not just as a legislator, but as a servant of Kabale. The trust that mothers, youths, and elders placed in me will be honored through active, fearless, and results-driven representation," she declared.''',
+                'category': 'parliament',
+                'location': 'Parliament of Uganda, Kampala',
+                'published_date': timezone.datetime(2026, 5, 20),
+                'is_featured': True,
+                'is_published': True
+            },
             {
-                'title': 'The Lasting Case for Aunt Enid',
+                'title': 'Kabale Community Welcomes Hon. Enid with Grand Thanksgiving Service',
+                'slug': 'kabale-community-welcomes-hon-enid-thanksgiving',
+                'excerpt': 'Thousands of residents from Ndorwa and Kabale Municipality gathered for an inter-denominational thanksgiving service celebrating unity and leadership for the district.',
+                'content': '''A massive crowd gathered in Kabale Town as religious leaders from the Catholic Church, Church of Uganda, and Muslim community joined thousands of supporters in a grand thanksgiving service honoring Hon. Enid Origumisiriza Atuheire's assumption of parliamentary duties.
+
+Leaders commended her steadfast commitment to non-partisan community development. Clergy speakers reminded the congregation that Aunt Enid had spent years mentoring young girls as Senior Woman Teacher at Kigezi High School and supporting widows long before seeking political office.
+
+During her address, Hon. Enid expressed heartfelt gratitude to the voters of Kabale:
+"This victory belongs to every household that desires progress. Election season is behind us; now is the time to build together. Whether you voted yellow or held another view, I am the Woman MP for all people of Kabale District."
+
+The thanksgiving ceremony featured performances by youth groups, testimonies from women SACCO leaders who have benefited from her mentorship, and an agricultural exhibition by local Irish potato farmers.''',
+                'category': 'community',
+                'location': 'Kabale Town',
+                'published_date': timezone.datetime(2026, 6, 12),
+                'is_featured': True,
+                'is_published': True
+            },
+            {
+                'title': 'Advancing PDM Funds: Hon. Enid Inspects Beneficiary Farmer Groups in Buhara and Maziba',
+                'slug': 'advancing-pdm-funds-hon-enid-inspects-buhara-maziba',
+                'excerpt': 'In her oversight role, Hon. Enid conducted an extensive inspection tour of agricultural projects benefiting from the Parish Development Model in rural sub-counties.',
+                'content': '''Hon. Enid Origumisiriza Atuheire has concluded a three-day working tour across Buhara, Maziba, and Kyanamira sub-counties to evaluate the implementation of the Parish Development Model (PDM).
+
+The Woman MP met with parish chiefs, SACCO leaders, and individual farming beneficiaries engaged in potato seed multiplication, zero-grazing dairy farming, and poultry projects.
+
+Key takeaways from the field monitoring tour:
+• Transparency in selection: Beneficiaries praised the improved vetting process, ensuring that the poorest households (the 39% in subsistence) receive their 1 million shillings entitlement.
+• Seed Quality: Hon. Enid intervened on complaints regarding seed quality, directing district agricultural officers to provide disease-resistant certified potato varieties suited for Kabale's volcanic soils.
+• Extension Services: She called on the Ministry of Agriculture, Animal Industry and Fisheries to increase veterinary and crop extension officers deployed in Kigezi.
+
+"PDM is the bedrock of President Museveni's vision to transition Uganda into middle-income status. In Kabale, we will not allow a single shilling to be siphoned away from the intended grassroots beneficiaries," Hon. Enid told gathering residents at Buhara trading center.''',
+                'category': 'empowerment',
+                'location': 'Buhara & Maziba Sub-counties',
+                'published_date': timezone.datetime(2026, 8, 5),
+                'is_featured': True,
+                'is_published': True
+            },
+            {
+                'title': 'The Lasting Case for Aunt Enid: A Legacy Built on Service and Mentorship',
                 'slug': 'the-lasting-case-for-aunt-enid',
-                'excerpt': 'Before she ever took her seat in Parliament, Hon. Enid Origumisiriza — fondly called Aunt Enid — had already written her story in the hearts of many. Through community projects, uplifting radio programs, and her tireless support for the needy, she gave hope where despair lingered.',
-                'content': '''Long before the title "Honourable" was added before her name, Enid Origumisiriza was already known in villages, homes, and marketplaces as a beacon of service. To the mothers who had once struggled silently, she was the one who came with listening ears and practical solutions. To the youth wandering without direction, she was the one who saw not only their struggles but also their potential. And to children who thought their voices were too small to be heard, she was the one who whispered back: "Your gift matters."
+                'excerpt': 'Before she ever took her seat in Parliament, Hon. Enid Origumisiriza — fondly called Aunt Enid — had already written her story in the hearts of many through community projects and school mentorship.',
+                'content': '''Long before the title "Honourable" was added before her name, Enid Origumisiriza was already known in villages, homes, and marketplaces as a beacon of service. To the mothers who had once struggled silently, she was the one who came with listening ears and practical solutions. To the youth wandering without direction, she was the one who saw not only their struggles but also their potential.
 
-Her work began humbly — reaching out to families in need, supporting widows, and creating safe spaces where women could learn skills and find empowerment. Enid believed that the strength of a community is found in its women, and by uplifting them, she uplifted entire households. Many small businesses that stand today carry her fingerprints, planted as seeds of encouragement and nurtured with guidance.
+Her work began humbly — reaching out to families in need, supporting widows, and creating safe spaces where women could learn skills and find empowerment. As Senior Woman Teacher at Kigezi High School, she instilled discipline, high academic ambition, and spiritual strength into generations of girls who are today doctors, engineers, and educators.
 
-But her compassion was never limited to economic empowerment. On radio, her voice became a constant companion in homes. Through programs filled with encouragement, advice, and practical wisdom, she reached even those she could not meet physically. Listeners did not just hear a host — they heard a sister, a mentor, and a friend who cared deeply about their well-being.
+On community radio, her voice became a constant companion in homes across Kigezi. Through programs filled with encouragement, advice, and practical wisdom, listeners found a trusted sister, mentor, and guide.
 
-For young people, Aunt Enid saw possibilities where others saw only barriers. She championed entrepreneurial initiatives, teaching skills, instilling confidence, and opening doors to opportunities. Each project she started was not just about financial gain but about dignity — giving young people the ability to dream bigger and to take charge of their own futures.
-
-Perhaps one of her most treasured legacies is the Children of the Word program. In it, she created a space where children and teenagers could explore their God-given talents. Whether in singing, storytelling, sports, or leadership, she encouraged them to shine. To Enid, every child was a promise, and nurturing that promise was her sacred duty.
-
-Her impact did not come with pomp or self-promotion. Instead, it came through selfless service, consistent presence, and genuine love for people. She gave, not because she had plenty, but because she believed that true abundance is measured by how many lives you touch.
-
-Now, as she steps into greater responsibility in Parliament, the community looks back at her track record and forward with expectation. For they know that Aunt Enid is not a new leader — she is a trusted hand, a proven servant, a voice that has long spoken for the voiceless.
-
-Ogu murundi ni Aunt Enid — this time, once again, it is Aunt Enid. And her story of compassion, leadership, and community progress is still being written.''',
+Now in the 12th Parliament, Aunt Enid continues this sacred calling with the same humility, accessibility, and unwavering love for the people of Kabale.''',
                 'category': 'leadership',
                 'location': 'Kabale District',
-                'published_date': timezone.datetime(2025, 9, 25),
-                'is_featured': True
+                'published_date': timezone.datetime(2026, 3, 1),
+                'is_featured': True,
+                'is_published': True
             },
             {
-                'title': 'President Museveni\'s Historic Nomination',
+                'title': 'President Museveni Nomination & Historic NRM Unity Rally',
                 'slug': 'president-museveni-historic-nomination',
-                'excerpt': 'Hon. Enid Origumisiriza Atuheire joined thousands of NRM supporters at Kololo to celebrate the official nomination of H.E. President Yoweri Kaguta Museveni as the NRM presidential candidate for the 2026 elections — a historic moment of unity, strength, and renewed commitment to Uganda\'s future.',
-                'content': '''Hon. Enid Origumisiriza Atuheire joined thousands of NRM supporters at Kololo to celebrate the official nomination of H.E. President Yoweri Kaguta Museveni as the NRM presidential candidate for the 2026 elections — a historic moment of unity, strength, and renewed commitment to Uganda's future.
+                'excerpt': 'Hon. Enid Origumisiriza Atuheire joined thousands of NRM supporters at Kololo to celebrate the party\'s strategic roadmap under the leadership of President Yoweri Kaguta Museveni.',
+                'content': '''Hon. Enid Origumisiriza Atuheire joined thousands of jubilant supporters and party delegates at Kololo Independence Grounds to celebrate the official nomination of H.E. President Yoweri Kaguta Museveni as the NRM presidential flag bearer.
 
-HON. ENID ORIGUMISIRIZA ATUHEIRE JOINED THOUSANDS TO WITNESS PRESIDENT MUSEVENI'S HISTORIC NOMINATION
+Draped in iconic party yellow, delegates reaffirmed the party's historic mission: peace, national security, infrastructure development, and economic transformation under the 2026–2031 Manifesto.
 
-Yesterday, Hon. Enid Origumisiriza Atuheire, the NRM flag bearer for Kabale District Woman Member of Parliament, joined thousands of jubilant supporters at Kololo Independence Grounds to witness a landmark moment in Uganda's political history.
+Hon. Enid emphasized that Kabale District stands to gain tremendously from the national development priorities, particularly in industrial value addition for agricultural goods, road connectivity to Rwanda and DRC, and healthcare revitalization.
 
-The atmosphere was electric as H.E. President Yoweri Kaguta Museveni made a grand, signature entrance following his official nomination as NRM's presidential candidate for the 2026 General Elections.
-
-Draped in yellow, party supporters from all corners of the country gathered in solidarity, waving flags and singing songs that echoed the strength and resilience of the National Resistance Movement (NRM). The celebration symbolized the party's enduring legacy and its unwavering vision for Uganda's continued transformation.
-
-Hon. Enid Origumisiriza Atuheire's presence at Kololo reaffirmed her commitment to the NRM's core values — peace, stability, and inclusive development — and her unwavering support for the leadership of President Museveni, under whom Uganda has made remarkable progress since 1986.
-
-As the nation gears up for the 2026 general elections, Hon. Enid stands firm with the people of Kabale and the NRM family, ready to deliver servant leadership, unity, and progress.
-
-#NRM2026
-#EnidForKabale
-#SteadyProgress
-#TogetherWeMove''',
+"Our unity as NRM is our greatest strength. Under President Museveni's visionary stewardship, Kabale will continue to rise," she noted.''',
                 'category': 'nrm_event',
                 'location': 'Kololo Independence Grounds',
                 'published_date': timezone.datetime(2025, 9, 23),
-                'is_featured': True
+                'is_featured': True,
+                'is_published': True
             },
             {
-                'title': 'Clarification on False Reports Circulating Online',
+                'title': 'Clarification on False Reports Circulating Online Regarding Buhara',
                 'slug': 'clarification-on-false-reports-circulating-online',
-                'excerpt': 'We wish to clarify that the information circulating on social media regarding the alleged storming of Buhara Police Post by residents of Kiringa village is false and misleading.',
-                'content': '''We wish to clarify that the information circulating on social media regarding the alleged storming of Buhara Police Post by residents of Kiringa village is false and misleading.
+                'excerpt': 'Official clarification: Disregarding fabricated social media claims and reiterating commitment to peaceful, lawful, and dignified leadership.',
+                'content': '''We wish to clarify that information circulated on certain online blogs regarding alleged incidents at Buhara Police Post was entirely fabricated and malicious.
 
-CLARIFICATION ON FALSE REPORTS CIRCULATING ONLINE
+At no point did Hon. Enid Origumisiriza Atuheire or her team engage in any unlawful activity. All engagements by Aunt Enid and her campaign remain strictly peaceful, lawful, and anchored on mutual respect and due process.
 
-We have taken note of a misleading article currently circulating on social media under the headline: "Residents Storm Buhara Police Post, Secure Release of Arrested Village Leader."
-
-This claim is entirely false and appears to be a deliberate attempt to mislead the public, cause unnecessary alarm, and discredit our team. At no point did any Hon. Enid Origumisiriza Atuheire aka Aunt Enid get involved in such activities. All activities and engagements by our team and supporters have remained peaceful, lawful, and grounded in respect for due process.
-
-We are aware that such misinformation is part of an ongoing pattern of intimidation, targeted against our team — a pattern that has included bullying, threats, and attempts to sow division within the community. Despite these provocations, we have chosen a path of discipline, unity, and focus on the bigger picture: representing the will of the people in the upcoming general elections.
-
-Let it be clear: we are not shaken. The people know the truth, and they know who stands for transparency, development, and genuine leadership.
-
-We urge our supporters and the wider public to disregard such propaganda, and instead stand firm in support of peaceful, honest politics. We remain committed to engaging voters with respect, listening to their concerns, and building a leadership that is inclusive and people-centered.
-
-Let us rise above falsehoods — and walk forward, together, with truth and integrity.
-
-#Owaboona
-#Omutashorora
-#EirakaRyaitu
-#AuntEnid''',
+We urge supporters and the public to disregard propaganda intended to distract from genuine development work. We remain focused on unity, service delivery, and uplifting Kabale District.''',
                 'category': 'clarification',
                 'location': 'Buhara, Kabale District',
                 'published_date': timezone.datetime(2025, 9, 24),
-                'is_featured': True
-            },
-            {
-                'title': 'Successful Campaign Rally in Kabale Town',
-                'slug': 'successful-campaign-rally-in-kabale-town',
-                'excerpt': 'Aunt Enid addressed thousands of supporters at the main square, sharing her vision for Kabale District\'s future and listening to community concerns.',
-                'content': '''Aunt Enid addressed thousands of supporters at the main square, sharing her vision for Kabale District's future and listening to community concerns. The rally was a tremendous success with enthusiastic participation from all age groups.
-
-The event showcased Aunt Enid's commitment to inclusive development and her deep understanding of the district's needs. Supporters from across Kabale came together to hear her plans for education, healthcare, infrastructure, and economic development.
-
-Key highlights of the rally included:
-
-• Interactive Q&A sessions with community members
-• Presentation of the comprehensive development plan
-• Recognition of local leaders and community champions
-• Launch of new community engagement initiatives
-
-The rally demonstrated the strong support for Aunt Enid's candidacy and her vision for a prosperous Kabale District. The energy and enthusiasm of the crowd reflected the community's readiness for positive change and development.
-
-Aunt Enid emphasized her commitment to transparent governance, community participation, and sustainable development that benefits all residents of Kabale District.
-
-The successful rally marks another milestone in Aunt Enid's campaign to represent the people of Kabale District with integrity, dedication, and a clear vision for the future.''',
-                'category': 'campaign',
-                'location': 'Kabale Town',
-                'published_date': timezone.datetime(2025, 9, 24),
-                'is_featured': True
-            },
-            {
-                'title': 'Women Empowerment Workshop Launched',
-                'slug': 'women-empowerment-workshop-launched',
-                'excerpt': 'Aunt Enid launched a series of workshops aimed at empowering women entrepreneurs in Kabale District with business skills and financial literacy.',
-                'content': '''Aunt Enid launched a series of workshops aimed at empowering women entrepreneurs in Kabale District with business skills and financial literacy. The initiative represents a significant step forward in promoting gender equality and economic empowerment.
-
-The workshops cover essential topics including:
-
-• Business planning and strategy development
-• Financial management and budgeting
-• Marketing and customer relations
-• Digital literacy and online business
-• Leadership and communication skills
-• Access to funding and microfinance
-
-Over 200 women from across Kabale District have already registered for the first phase of workshops, demonstrating the strong demand for such programs in the community.
-
-Aunt Enid emphasized that empowering women is not just about individual success, but about strengthening entire communities and driving sustainable development. When women have access to education, resources, and opportunities, everyone benefits.
-
-The workshops are designed to be practical and hands-on, with real-world applications that participants can immediately implement in their businesses and daily lives.
-
-This initiative aligns with Aunt Enid's broader vision of inclusive development that ensures no one is left behind, particularly women who have historically faced barriers to economic participation.
-
-The program includes mentorship opportunities, networking events, and ongoing support to ensure long-term success for participants.''',
-                'category': 'women_empowerment',
-                'location': 'Kabale District',
-                'published_date': timezone.datetime(2025, 9, 24),
-                'is_featured': True
-            },
-            {
-                'title': 'Youth Engagement Forum',
-                'slug': 'youth-engagement-forum',
-                'excerpt': 'Aunt Enid met with youth leaders to discuss employment opportunities, education access, and youth participation in community development.',
-                'content': '''Aunt Enid met with youth leaders to discuss employment opportunities, education access, and youth participation in community development. The forum provided a platform for young people to voice their concerns and share their vision for Kabale District's future.
-
-Key topics discussed included:
-
-• Creating more job opportunities for young people
-• Improving access to quality education and vocational training
-• Supporting youth entrepreneurship and innovation
-• Enhancing youth participation in local governance
-• Addressing challenges faced by young people in rural areas
-• Promoting digital literacy and technology skills
-
-The forum highlighted the critical role that young people play in driving development and innovation. Aunt Enid emphasized her commitment to creating an environment where youth can thrive and contribute meaningfully to society.
-
-Participants shared their experiences and challenges, providing valuable insights into the needs and aspirations of young people in Kabale District. The discussion revealed a strong desire for:
-
-• Better infrastructure and connectivity
-• Access to modern technology and digital resources
-• Support for creative and innovative projects
-• Opportunities for skills development and training
-• Platforms for youth leadership and civic engagement
-
-Aunt Enid committed to establishing regular youth forums and creating a youth advisory council to ensure that young people's voices are heard in policy-making and development planning.
-
-The forum concluded with concrete action plans for youth development initiatives, including mentorship programs, skills training workshops, and support for youth-led community projects.''',
-                'category': 'youth_development',
-                'location': 'Kabale District',
-                'published_date': timezone.datetime(2025, 9, 24),
-                'is_featured': True
+                'is_featured': False,
+                'is_published': True
             }
         ]
-        
-        for article_data in news_articles_data:
-            article, created = NewsArticle.objects.get_or_create(
-                slug=article_data['slug'],
-                defaults=article_data
-            )
-            if created:
-                self.stdout.write(f'✓ News article "{article.title}" created')
 
-        self.stdout.write(
-            self.style.SUCCESS('Successfully populated database with initial data!')
-        )
-        self.stdout.write('You can now run the development server with: python manage.py runserver')
-        self.stdout.write('Admin access: Username: admin, Password: admin123')
+        for art_data in articles_data:
+            art, _ = NewsArticle.objects.update_or_create(
+                slug=art_data['slug'],
+                defaults=art_data
+            )
+            self.stdout.write(f"[OK] Synced story: {art.title}")
+
+        self.stdout.write(self.style.SUCCESS("All database records successfully populated and updated!"))
