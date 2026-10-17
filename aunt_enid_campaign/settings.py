@@ -17,26 +17,30 @@ SECRET_KEY = os.getenv(
 )
 
 # DEBUG from environment (default True for local/dev). Set to 'False' in production.
-DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
+DEBUG = True
 
 # Hosts
 ALLOWED_HOSTS = [
+    'twiinaa.com',
+    'www.twiinaa.com',
     'twiina.com',
     'www.twiina.com',
-    '13.60.91.6',
-    '172.31.23.14',
-    'ec2-13-60-91-6.eu-north-1.compute.amazonaws.com',
+    '162.0.224.189',
     'localhost',
     '127.0.0.1',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    'http://twiinaa.com',
+    'https://twiinaa.com',
+    'http://www.twiinaa.com',
+    'https://www.twiinaa.com',
     'http://twiina.com',
     'https://twiina.com',
     'http://www.twiina.com',
     'https://www.twiina.com',
-    'http://13.60.91.6',
-    'http://172.31.23.14',
+    'http://162.0.224.189',
+    'https://162.0.224.189',
 ]
 
 
@@ -102,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"  # change to 'Africa/Kampala' if you prefer local time
+TIME_ZONE = "Africa/Kampala"
 USE_I18N = True
 USE_TZ = True
 
